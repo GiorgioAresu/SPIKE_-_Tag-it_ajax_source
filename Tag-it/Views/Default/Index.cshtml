@@ -16,14 +16,30 @@
     <script type="text/javascript" src="~/Scripts/tag-it.js"></script>
 </head>
 <body>
-<div>
-    <ul id="tagit-field">
-        <li>Click my label</li>
-        <li>Remove me</li>
-    </ul>
-</div>
-<script type="text/javascript">
-    $('#tagit-field').tagit();
-</script>
+    <div>
+        <ul id="tagit-field"></ul>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tagit-field').tagit({
+                autocomplete: {
+                    delay: 0,
+                    minLength: 1,
+                    source: function (search, showChoices) {
+                        var that = this;
+                        $.ajax({
+                            url: "@Url.Action("GetLabels")",
+                            data: { search: search.term },
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function (choices) {
+                                showChoices(that._subtractArray(choices, that.assignedTags()));
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

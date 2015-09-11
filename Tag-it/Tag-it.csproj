@@ -89,7 +89,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CSS\jquery.tagit.css" />
+    <Content Include="Content\CSS\tagit.ui-zendesk.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\tag-it.js" />
+    <Content Include="Scripts\tag-it.min.js">
+      <DependentUpon>tag-it.js</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

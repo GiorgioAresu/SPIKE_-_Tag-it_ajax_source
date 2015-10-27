@@ -21,6 +21,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
+            var assignedTags = [];
             $('#tagit-field').tagit({
                 autocomplete: {
                     delay: 0,
@@ -33,7 +34,10 @@
                             type: 'POST',
                             dataType: 'json',
                             success: function (choices) {
-                                showChoices(that._subtractArray(choices, that.assignedTags()));
+                                //x = JSON.parse(choices);
+                                showChoices(that._subtractArray($.map(choices, function (val, i) {
+                                    return val["Name"];
+                                }), assignedTags));
                             }
                         });
                     }

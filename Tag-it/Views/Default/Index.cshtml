@@ -1,0 +1,49 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Tag-it</title>
+    <link href="~/Content/CSS/jquery.tagit.css" rel="stylesheet" />
+    <link href="~/Content/CSS/tagit.ui-zendesk.css" rel="stylesheet" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="~/Scripts/tag-it.js"></script>
+</head>
+<body>
+    <div>
+        <ul id="tagit-field"></ul>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var assignedTags = [];
+            $('#tagit-field').tagit({
+                autocomplete: {
+                    delay: 0,
+                    minLength: 1,
+                    source: function (search, showChoices) {
+                        var that = this;
+                        $.ajax({
+                            url: "@Url.Action("GetLabels")",
+                            data: { search: search.term },
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function (choices) {
+                                //x = JSON.parse(choices);
+                                showChoices(that._subtractArray($.map(choices, function (val, i) {
+                                    return val["Name"];
+                                }), assignedTags));
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
